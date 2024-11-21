@@ -1,0 +1,488 @@
+"Input","Output"
+"Can you find some cool restaurants near me?","<soren>
+	<fragment>
+		I need to access the user's location. Let me check if they have Apple or Google Maps.
+		<tool id=[app_check]>
+			<app_check output> // this should return Apple Maps or Google Maps
+		</tool>
+		Okay, the user has <app_check output>. I now need to access their current location.
+		<tool id=[map_tool] params=[app=<app_check output>, function=get_location]>
+			<map_tool output> // returns ""City, State/Province, Country""
+		</tool>
+		I now need to search for restaurants in <map_tool output>. I need to use my search tool.
+		<tool id=[web_search] params=[query='Best restaurants in <map_tool output>', max_results=5]>
+			<web_search output> // formatted as a list of items
+		</tool>
+		Now I will summarize everything.
+		<tool id=[summarizer]>
+			<summarizer output>
+		</tool>
+	</fragment>
+	<output>
+		After looking some things up, I found that in <map_tool output>, some of the best restaurants are <summarizer output>.
+	</output>
+</soren>"
+"What's the weather like today in my city?","<soren>
+	<fragment>
+		I need to find out the user's current location. I'll check if location services are enabled.
+		<tool id=[location_check]>
+			<location_check output> // returns true or false
+		</tool>
+		Location services are <location_check output>. I'll get the user's current city.
+		<tool id=[get_location]>
+			<get_location output> // returns ""City, State/Province, Country""
+		</tool>
+		Now I'll get the weather for <get_location output> using the weather API.
+		<tool id=[weather_api] params=[location=<get_location output>]>
+			<weather_api output> // returns weather information
+		</tool>
+		I'll summarize the weather information.
+		<tool id=[summarizer]>
+			<summarizer output>
+		</tool>
+	</fragment>
+	<output>
+		The current weather in <get_location output> is <summarizer output>.
+	</output>
+</soren>"
+"I need to book a flight to New York next Monday.","<soren>
+	<fragment>
+		I need to check available flights to New York for next Monday. I'll confirm the date.
+		<tool id=[date_calculator] params=[day='next Monday']>
+			<date_calculator output> // returns date in YYYY-MM-DD
+		</tool>
+		Now I'll search for flights to New York on <date_calculator output>.
+		<tool id=[flight_search] params=[destination='New York', date=<date_calculator output>]>
+			<flight_search output> // returns list of flights
+		</tool>
+		I'll present the available flights to the user.
+		<tool id=[summarizer]>
+			<summarizer output>
+		</tool>
+	</fragment>
+	<output>
+		I found the following flights to New York on <date_calculator output>: <summarizer output>.
+	</output>
+</soren>"
+"Can you translate 'Hello, how are you?' into French?","<soren>
+	<fragment>
+		I need to translate the given text into French. I'll use the translation tool.
+		<tool id=[translator] params=[text='Hello, how are you?', target_language='French']>
+			<translator output> // returns translated text
+		</tool>
+	</fragment>
+	<output>
+		Here's the translation: <translator output>.
+	</output>
+</soren>"
+"Remind me to call John at 3 PM tomorrow.","<soren>
+	<fragment>
+		I need to set a reminder to call John at 3 PM tomorrow. I'll confirm the date and time.
+		<tool id=[date_time_parser] params=[input_text='3 PM tomorrow']>
+			<date_time_parser output> // returns date and time
+		</tool>
+		Now I'll set the reminder.
+		<tool id=[set_reminder] params=[time=<date_time_parser output>, message='Call John']>
+			<set_reminder output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		Reminder set to call John at <date_time_parser output>.
+	</output>
+</soren>"
+"Find me a recipe for chocolate chip cookies.","<soren>
+	<fragment>
+		I need to find a recipe for chocolate chip cookies. I'll use the recipe search tool.
+		<tool id=[recipe_search] params=[query='chocolate chip cookies']>
+			<recipe_search output> // returns recipe details
+		</tool>
+		I'll summarize the recipe for the user.
+		<tool id=[summarizer]>
+			<summarizer output>
+		</tool>
+	</fragment>
+	<output>
+		Here's a recipe for chocolate chip cookies: <summarizer output>.
+	</output>
+</soren>"
+"What's the capital of France?","<soren>
+	<fragment>
+		I need to find out the capital of France. I'll query the knowledge base.
+		<tool id=[knowledge_base_query] params=[query='Capital of France']>
+			<knowledge_base_query output> // returns ""Paris""
+		</tool>
+	</fragment>
+	<output>
+		The capital of France is <knowledge_base_query output>.
+	</output>
+</soren>"
+"Tell me a joke.","<soren>
+	<fragment>
+		I need to find a joke to tell the user. I'll use the joke generator.
+		<tool id=[joke_generator]>
+			<joke_generator output> // returns a joke
+		</tool>
+	</fragment>
+	<output>
+		Here's a joke for you: <joke_generator output>.
+	</output>
+</soren>"
+"Play my favorite song.","<soren>
+	<fragment>
+		I need to find the user's favorite song. I'll check their music preferences.
+		<tool id=[user_preferences] params=[category='music']>
+			<user_preferences output> // returns favorite song
+		</tool>
+		Now I'll play <user_preferences output> for the user.
+		<tool id=[music_player] params=[song=<user_preferences output>]>
+			<music_player output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		Playing your favorite song: <user_preferences output>.
+	</output>
+</soren>"
+"Schedule a meeting with Sarah next Thursday at 10 AM.","<soren>
+	<fragment>
+		I need to schedule a meeting with Sarah next Thursday at 10 AM. I'll confirm the date.
+		<tool id=[date_time_parser] params=[input_text='next Thursday at 10 AM']>
+			<date_time_parser output> // returns date and time
+		</tool>
+		I'll check Sarah's availability at <date_time_parser output>.
+		<tool id=[calendar_check] params=[person='Sarah', time=<date_time_parser output>]>
+			<calendar_check output> // returns availability
+		</tool>
+		Sarah is <calendar_check output>. I'll schedule the meeting.
+		<tool id=[schedule_meeting] params=[with='Sarah', time=<date_time_parser output>]>
+			<schedule_meeting output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		Meeting with Sarah scheduled for <date_time_parser output>.
+	</output>
+</soren>"
+"Can you solve this math problem: 2x + 3 = 7?","<soren>
+	<fragment>
+		I need to solve the equation 2x + 3 = 7. I'll use the math solver.
+		<tool id=[math_solver] params=[equation='2x + 3 = 7']>
+			<math_solver output> // returns x = 2
+		</tool>
+	</fragment>
+	<output>
+		The solution to the equation is <math_solver output>.
+	</output>
+</soren>"
+"I need directions to the nearest gas station.","<soren>
+	<fragment>
+		I need to find the nearest gas station to the user's location. I'll get their location.
+		<tool id=[get_location]>
+			<get_location output> // returns coordinates or address
+		</tool>
+		Now I'll search for gas stations near <get_location output>.
+		<tool id=[map_search] params=[query='gas station', location=<get_location output>]>
+			<map_search output> // returns list of nearby gas stations
+		</tool>
+		I'll provide directions to the nearest one.
+		<tool id=[directions] params=[destination=<map_search output>[0], origin=<get_location output>]>
+			<directions output> // returns directions
+		</tool>
+	</fragment>
+	<output>
+		Here are the directions to the nearest gas station: <directions output>.
+	</output>
+</soren>"
+"What's the stock price of Apple today?","<soren>
+	<fragment>
+		I need to find the current stock price of Apple. I'll use the financial data tool.
+		<tool id=[stock_price] params=[symbol='AAPL']>
+			<stock_price output> // returns current stock price
+		</tool>
+	</fragment>
+	<output>
+		The current stock price of Apple (AAPL) is <stock_price output>.
+	</output>
+</soren>"
+"How many calories are in a banana?","<soren>
+	<fragment>
+		I need to find out how many calories are in a banana. I'll query the nutrition database.
+		<tool id=[nutrition_info] params=[food='banana']>
+			<nutrition_info output> // returns calorie information
+		</tool>
+	</fragment>
+	<output>
+		A banana contains approximately <nutrition_info output> calories.
+	</output>
+</soren>"
+"Set an alarm for 7 AM tomorrow.","<soren>
+	<fragment>
+		I need to set an alarm for 7 AM tomorrow. I'll confirm the date and time.
+		<tool id=[date_time_parser] params=[input_text='7 AM tomorrow']>
+			<date_time_parser output> // returns date and time
+		</tool>
+		Now I'll set the alarm.
+		<tool id=[set_alarm] params=[time=<date_time_parser output>]>
+			<set_alarm output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		Alarm set for <date_time_parser output>.
+	</output>
+</soren>"
+"Convert 100 USD to Euros.","<soren>
+	<fragment>
+		I need to convert 100 USD to Euros. I'll use the currency converter.
+		<tool id=[currency_converter] params=[amount=100, from_currency='USD', to_currency='EUR']>
+			<currency_converter output> // returns converted amount
+		</tool>
+	</fragment>
+	<output>
+		100 USD is approximately <currency_converter output> EUR.
+	</output>
+</soren>"
+"What's the time in Tokyo right now?","<soren>
+	<fragment>
+		I need to find the current time in Tokyo. I'll use the world clock.
+		<tool id=[world_clock] params=[city='Tokyo']>
+			<world_clock output> // returns current time
+		</tool>
+	</fragment>
+	<output>
+		The current time in Tokyo is <world_clock output>.
+	</output>
+</soren>"
+"Find images of cute puppies.","<soren>
+	<fragment>
+		I need to find images of cute puppies. I'll use the image search tool.
+		<tool id=[image_search] params=[query='cute puppies', max_results=5]>
+			<image_search output> // returns list of image URLs
+		</tool>
+	</fragment>
+	<output>
+		Here are some images of cute puppies: <image_search output>.
+	</output>
+</soren>"
+"How do I reset my router?","<soren>
+	<fragment>
+		I need to provide instructions on how to reset a router. I'll search for a guide.
+		<tool id=[web_search] params=[query='How to reset a router', max_results=1]>
+			<web_search output> // returns a guide
+		</tool>
+		I'll summarize the steps.
+		<tool id=[summarizer]>
+			<summarizer output>
+		</tool>
+	</fragment>
+	<output>
+		To reset your router: <summarizer output>.
+	</output>
+</soren>"
+"What is the meaning of life?","<soren>
+	<fragment>
+		I need to provide an answer to the question about the meaning of life. I'll search for philosophical perspectives.
+		<tool id=[knowledge_base_query] params=[query='Meaning of life']>
+			<knowledge_base_query output> // returns an explanation
+		</tool>
+	</fragment>
+	<output>
+		<knowledge_base_query output>
+	</output>
+</soren>"
+"Calculate the area of a circle with radius 5 cm.","<soren>
+	<fragment>
+		I need to calculate the area of a circle with radius 5 cm. I'll use the formula A = πr².
+		<tool id=[calculator] params=[expression='pi * 5^2']>
+			<calculator output> // returns the area
+		</tool>
+	</fragment>
+	<output>
+		The area of the circle is <calculator output> square centimeters.
+	</output>
+</soren>"
+"Check the status of my order #12345.","<soren>
+	<fragment>
+		I need to check the status of order #12345. I'll access the order tracking system.
+		<tool id=[order_tracker] params=[order_id='12345']>
+			<order_tracker output> // returns order status
+		</tool>
+	</fragment>
+	<output>
+		The status of your order #12345 is <order_tracker output>.
+	</output>
+</soren>"
+"Find the definition of 'ubiquitous'.","<soren>
+	<fragment>
+		I need to find the definition of 'ubiquitous'. I'll query the dictionary.
+		<tool id=[dictionary_lookup] params=[word='ubiquitous']>
+			<dictionary_lookup output> // returns definition
+		</tool>
+	</fragment>
+	<output>
+		The definition of 'ubiquitous' is: <dictionary_lookup output>.
+	</output>
+</soren>"
+"Translate 'Good morning' into Japanese.","<soren>
+	<fragment>
+		I need to translate 'Good morning' into Japanese. I'll use the translation tool.
+		<tool id=[translator] params=[text='Good morning', target_language='Japanese']>
+			<translator output> // returns translated text
+		</tool>
+	</fragment>
+	<output>
+		'Good morning' in Japanese is <translator output>.
+	</output>
+</soren>"
+"What's the exchange rate between GBP and USD?","<soren>
+	<fragment>
+		I need to find the current exchange rate between GBP and USD. I'll use the currency exchange tool.
+		<tool id=[exchange_rate] params=[from_currency='GBP', to_currency='USD']>
+			<exchange_rate output> // returns exchange rate
+		</tool>
+	</fragment>
+	<output>
+		The current exchange rate from GBP to USD is <exchange_rate output>.
+	</output>
+</soren>"
+"Set a timer for 20 minutes.","<soren>
+	<fragment>
+		I need to set a timer for 20 minutes. I'll initiate the timer.
+		<tool id=[set_timer] params=[duration='20 minutes']>
+			<set_timer output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		Timer set for 20 minutes.
+	</output>
+</soren>"
+"Find the nearest hospital.","<soren>
+	<fragment>
+		I need to locate the nearest hospital to the user's current location. I'll get their location.
+		<tool id=[get_location]>
+			<get_location output> // returns coordinates or address
+		</tool>
+		Now I'll search for hospitals near <get_location output>.
+		<tool id=[map_search] params=[query='hospital', location=<get_location output>]>
+			<map_search output> // returns list of nearby hospitals
+		</tool>
+		I'll provide directions to the nearest one.
+		<tool id=[directions] params=[destination=<map_search output>[0], origin=<get_location output>]>
+			<directions output> // returns directions
+		</tool>
+	</fragment>
+	<output>
+		Here are the directions to the nearest hospital: <directions output>.
+	</output>
+</soren>"
+"How do you say 'thank you' in Spanish?","<soren>
+	<fragment>
+		I need to translate 'thank you' into Spanish. I'll use the translation tool.
+		<tool id=[translator] params=[text='thank you', target_language='Spanish']>
+			<translator output> // returns 'gracias'
+		</tool>
+	</fragment>
+	<output>
+		'Thank you' in Spanish is <translator output>.
+	</output>
+</soren>"
+"Book a table for two at an Italian restaurant tonight.","<soren>
+	<fragment>
+		I need to find an Italian restaurant with availability for two tonight. I'll search for options.
+		<tool id=[restaurant_reservation] params=[cuisine='Italian', party_size=2, date='tonight']>
+			<restaurant_reservation output> // returns reservation details
+		</tool>
+	</fragment>
+	<output>
+		Table for two booked at <restaurant_reservation output>.
+	</output>
+</soren>"
+"What's 15% of 200?","<soren>
+	<fragment>
+		I need to calculate 15% of 200. I'll use the calculator.
+		<tool id=[calculator] params=[expression='0.15 * 200']>
+			<calculator output> // returns the result
+		</tool>
+	</fragment>
+	<output>
+		15% of 200 is <calculator output>.
+	</output>
+</soren>"
+"Tell me the latest news headlines.","<soren>
+	<fragment>
+		I need to fetch the latest news headlines. I'll use the news API.
+		<tool id=[news_api] params=[category='general', max_results=5]>
+			<news_api output> // returns list of headlines
+		</tool>
+	</fragment>
+	<output>
+		Here are the latest news headlines: <news_api output>.
+	</output>
+</soren>"
+"What's the distance between Earth and Mars?","<soren>
+	<fragment>
+		I need to find the current distance between Earth and Mars. I'll query the space data API.
+		<tool id=[space_data_api] params=[bodies='Earth,Mars']>
+			<space_data_api output> // returns distance
+		</tool>
+	</fragment>
+	<output>
+		The current distance between Earth and Mars is <space_data_api output>.
+	</output>
+</soren>"
+"Create a to-do list for today.","<soren>
+	<fragment>
+		I need to create a new to-do list for today. I'll initialize the list.
+		<tool id=[create_todo_list] params=[date='today']>
+			<create_todo_list output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		To-do list for today has been created.
+	</output>
+</soren>"
+"Remind me to water the plants every Monday.","<soren>
+	<fragment>
+		I need to set a recurring reminder to water the plants every Monday. I'll set up the reminder.
+		<tool id=[set_recurring_reminder] params=[day='Monday', message='Water the plants']>
+			<set_recurring_reminder output> // confirmation
+		</tool>
+	</fragment>
+	<output>
+		Recurring reminder set to water the plants every Monday.
+	</output>
+</soren>"
+"Find a nearby coffee shop that's open now.","<soren>
+	<fragment>
+		I need to find a coffee shop near the user's location that's currently open. I'll get their location.
+		<tool id=[get_location]>
+			<get_location output> // returns coordinates or address
+		</tool>
+		Now I'll search for coffee shops near <get_location output> that are open now.
+		<tool id=[map_search] params=[query='coffee shop', location=<get_location output>, open_now=true]>
+			<map_search output> // returns list of coffee shops
+		</tool>
+	</fragment>
+	<output>
+		Here are some coffee shops near you that are open now: <map_search output>.
+	</output>
+</soren>"
+"What's the population of Canada?","<soren>
+	<fragment>
+		I need to find out the population of Canada. I'll query the demographic database.
+		<tool id=[demographics_api] params=[country='Canada']>
+			<demographics_api output> // returns population data
+		</tool>
+	</fragment>
+	<output>
+		The population of Canada is <demographics_api output>.
+	</output>
+</soren>"
+"Translate 'I love you' into German.","<soren>
+	<fragment>
+		I need to translate 'I love you' into German. I'll use the translation tool.
+		<tool id=[translator] params=[text='I love you', target_language='German']>
+			<translator output> // returns 'Ich liebe dich'
+		</tool>
+	</fragment>
+	<output>
+		'I love you' in German is <translator output>.
+	</output>
+</soren>"
